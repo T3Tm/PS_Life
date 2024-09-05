@@ -16,9 +16,8 @@ struct custom_hash {
         return splitmix64(x + FIXED_RANDOM);
     }
 };
-unordered_map<int,__gnu_pbds::gp_hash_table<int, int, custom_hash>>dp;
-unordered_map<int,int>numbering;
-int unused = 1;//이걸로 매핑 해주기
+__gnu_pbds::gp_hash_table<int,__gnu_pbds::gp_hash_table<int, int, custom_hash>,custom_hash>dp;
+__gnu_pbds::gp_hash_table<int,int,custom_hash>numbering;
 int arr[2002];
 int dfs(int next, int gap){
     if(numbering.find(next) == numbering.end() || numbering[next] == 0){
@@ -41,7 +40,7 @@ int main(){
     int n;cin >> n;
     for(int i=0;i<n;i++){
         int num;cin >> num;
-        if(numbering.count(num)){
+        if(numbering.find(num) != numbering.end()){
             numbering[num]++;
         }else{
             numbering.insert({num, 1});
