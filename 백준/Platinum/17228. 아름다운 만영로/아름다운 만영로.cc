@@ -21,19 +21,18 @@ int result;
 char pick[MXSIZE];
 void dfs(int cur, long long hash1, long long hash2, char now[], int depth){
     long long now_hash[] = {hash1, hash2};
-
-    if (depth > l){
-        for(int k{}; k<2;k++){
-            now_hash[k] = ((now_hash[k] - (to_int(now[depth - l - 1]) * p_pow[k][l-1])%m[k]) *p[k] + to_int(now[depth - 1]))%m[k];
-            if(now_hash[k] < 0)now_hash[k] += m[k];
-        }
-    }
-    else if(depth == l){
-        for(int k{}; k < 2;k++){
-            for(int i{};i<l;i++){
-                now_hash[k] = (now_hash[k] + (to_int(now[i]) * p_pow[k][l-i-1])%m[k])%m[k];
+    if(depth){
+        if(depth > l){
+            for(int k{}; k<2;k++){
+                now_hash[k] = ((now_hash[k] - (to_int(now[depth - l - 1]) * p_pow[k][l-1])%m[k]) *p[k] + to_int(now[depth - 1]))%m[k];
                 if(now_hash[k] < 0)now_hash[k] += m[k];
             }
+        }else{
+            for(int k{}; k < 2;k++){
+                now_hash[k] = (now_hash[k] + (to_int(now[depth - 1]) * p_pow[k][l-depth])%m[k])%m[k];
+                if(now_hash[k] < 0)now_hash[k] += m[k];
+            }
+            
         }
     }
 
@@ -77,7 +76,7 @@ int main(){
             pattern[k] = (pattern[k] + (p_pow[k][l-i-1]*to_int(target[i]))%m[k])%m[k];
         }
     }
-    
+
     pick[MXSIZE - 1] = '\n';//일단 마지막에 넣어놓기
 
     dfs(1, 0, 0, pick, 0);
