@@ -5,34 +5,24 @@ int n,m,k;
 
 struct Pair{
     int v,c,d;
-    bool operator()(const Pair& a, const Pair& b){
-        return a.d > b.d;
-    }
 };
+int dp[102][10002];
 vector<vector<Pair>>graph;
-int KCM_Travel(){
-    int dp[102][10002];
-    memset(dp, 0x3f, sizeof dp);
-    priority_queue<Pair, vector<Pair>,Pair>pq;
-    pq.push({1,0,0});
-    dp[1][0] = 0;
-    while(!pq.empty()){
-        auto [cur, cur_cost, cur_distance] = pq.top(); pq.pop();
-        if(cur == n)return cur_distance; //제일 빠르게 해당 n에 도달했음
-        if(cur_cost == m)continue;
-        if(cur_distance > dp[cur][cur_cost])continue;
+int dfs(int cur, int cost){
+    if(cur == n)return 0;
+    if(dp[cur][cost]!=-1)return dp[cur][cost];
 
-        for(auto &[nxt, nxt_cost, nxt_distance]: graph[cur]){
-            if(cur_cost + nxt_cost > m)break;//여기서 break를 걸 수 있게됨
-            
-            if(dp[nxt][cur_cost + nxt_cost] > cur_distance + nxt_distance){
-                dp[nxt][cur_cost + nxt_cost] = cur_distance + nxt_distance;
-
-                pq.push({nxt, cur_cost + nxt_cost, cur_distance + nxt_distance});
-            }
-        }
+    dp[cur][cost] = INF;
+    for(auto&[nxt, nxt_cost, nxt_dist]:graph[cur]){
+        if(cost + nxt_cost > m)break;
+        dp[cur][cost] = min(dp[cur][cost], dfs(nxt, nxt_cost + cost) + nxt_dist);
     }
-    return INF;
+    return dp[cur][cost];
+}
+int KCM_Travel(){
+
+    memset(dp, -1, sizeof dp);
+    return dfs(1,0);
 }
 int main(){
     cin.tie(0) -> ios::sync_with_stdio(0);
