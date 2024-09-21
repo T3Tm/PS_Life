@@ -2,7 +2,7 @@
 using namespace std;
 
 
-unordered_map<char, int> trans;
+map<char, int> trans;
 void precomputation(const string& s){
     trans.clear();//전에 계산된 거 삭제
     for(int i{};i<s.size();i++){
