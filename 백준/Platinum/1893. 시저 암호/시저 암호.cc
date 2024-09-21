@@ -42,6 +42,7 @@ bool kmp(const vector<int> &f,const string&w, const string&s, int alpha, const s
 
         j++;
         if(j == l-1){
+            if(cnt)return false;
             cnt++;
             j = f[j];
         }
