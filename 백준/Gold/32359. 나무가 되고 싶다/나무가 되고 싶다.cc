@@ -69,9 +69,9 @@
 using namespace std;
 const int MX = 5 * (int)1e5 + 2;
 long long arr[MX];
-map<long long, int>parent;//해당 정점 몇 번 방문
-map<long long, long long>ccnt;//해당 정점에 방문했을 때 몇 개였는지 기입
-set<long long>dont;//입력으로 들어온 아이들은 절대 나오면 안됨.
+unordered_map<long long, int>parent;//해당 정점 몇 번 방문
+unordered_map<long long, long long>ccnt;//해당 정점에 방문했을 때 몇 개였는지 기입
+unordered_set<long long>dont;//입력으로 들어온 아이들은 절대 나오면 안됨.
 int main(){
     cin.tie(0) -> sync_with_stdio(0);
     int n;cin >> n;
