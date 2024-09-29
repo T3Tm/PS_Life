@@ -4,7 +4,7 @@ const int MX = (int)1e6 + 2;
 int main(){
     cin.tie(0) -> sync_with_stdio(0);
     int n,m;cin >> n>> m;
-    map<int, vector<int>>mod;
+    vector<vector<int>>mod(m);
     long long prefix[MX]{};
     for(int i{1};i<=n;i++){
         cin >> prefix[i];
