@@ -1,49 +1,58 @@
+'''
+'25. 11. 12.(수)
+
+1. 하나의 길이가 30만이기 때문에, 그냥 다 돌리면 된다.
+
+1. 전체합 구한다. 그 후 절반을 구한다.
+2. 앞을 빼서 뒤로 넣는 작업을 한다.
+'''
+from collections import deque
+def queue_pop(src: deque, dst: deque, half: int) -> int:
+    ret = 0
+    dq = deque([v for v in src + dst])
+    
+    f = b = t = 0
+    for i in range(len(src)):
+        t += src[i]
+        b += 1
+        
+    if t == half:
+        return 0
+    
+    while b < len(dq):
+        if t < half:
+            t += dq[b]
+            b += 1
+            ret += 1
+        elif t > half:
+            t -= dq[f]
+            f += 1
+            ret += 1
+        
+        if half == t:break
+        
+    if t != half:
+        ret = -1
+    return ret
+    
 def solution(queue1, queue2):
-    INF = 0x3f3f3f3f
-    answer = INF
+    answer = -2
+    front = sum(queue1)
+    back = sum(queue2)
     
-    total = sum(queue1) + sum(queue2)
-    half = total >> 1 
-    q1_q2 = queue1 + queue2
+    if (front + back) & 1:return -1
+    half = (front + back) >> 1
     
-    now = 0
-    left = right = 0
-    while right <= len(q1_q2):
-        if now < half:
-            if right == len(q1_q2):break
-            now += q1_q2[right]
-            right += 1
-        elif now == half:break
-        else:
-            now -= q1_q2[left]
-            left += 1
-    if now == half:
-        right -= 1#이래야 인덱스가 맞음
-        if right + 1 < len(queue1):#하나 안에서 가능
-            answer = right + 1 + len(queue2) + left
-        elif right + 1 == len(queue1):#한 개로 해결가능
-            answer = left
-        else:
-            answer = left + right - len(queue2) + 1
-    q2_q1 = queue2 + queue1
-    now = 0
-    left = right = 0
-    while right <= len(q2_q1):
-        if now < half:
-            if right == len(q2_q1):break
-            now += q2_q1[right]
-            right += 1
-        elif now == half:break
-        else:
-            now -= q2_q1[left]
-            left += 1
+    if half == front == back:return 0
+    f = queue_pop(queue1, queue2, half)
+    b = queue_pop(queue2, queue1, half)
     
-    if now == half:
-        right -= 1#이래야 인덱스가 맞음
-        if right + 1 < len(queue2):#하나 안에서 가능
-            answer = min(answer,right + 1 + len(queue1) + left)
-        elif right + 1 == len(queue2):#한 개로 해결가능
-            answer = left
-        else:
-            answer = min(answer, left + right - len(queue2) + 1)
-    return [answer,-1][answer == INF]
+    if f != -1 and b != -1:
+        answer = min(f, b)
+    elif f == -1:
+        answer = b
+    else:
+        answer = f
+    
+    
+    return answer
