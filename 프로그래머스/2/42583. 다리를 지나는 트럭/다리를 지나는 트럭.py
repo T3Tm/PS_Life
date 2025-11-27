@@ -30,7 +30,7 @@ def solution(bridge_length, weight, truck_weights):
         dq.append([now_truck, answer])#1번째 칸에 올려졌음.
         now_weight += now_truck
         i += 1
-        print(answer, dq)
+        #print(answer, dq)
         
     if dq:
         answer += bridge_length - (answer - dq[-1][1])
